@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Login Test Page!</h1>
+
+    <a href="http://localhost:4000/authorize">
+        <!-- 여기는 그냥 이미지만 있고, 결국 http://localhost:4000/authorize로 보내서 여기서 카카오에서 인가코드를 받아서 그걸 url에 붙여서 /redirect 라는 주소로 리다이렉트 시켜서 거기서 엑세스 토큰과 리프레시 토큰을 발급받는 형태로 보여진다. -->
+        <img src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg" width="222" />
+    </a><br />
+    
+    <button onclick="REST_Call('/profile')">프로필 조회 </button><br />
+    
+    <textarea id="contents" rows='10' cols='50'></textarea><br />
+    <img id="thumbnail" src="" alt="thumnail Image"><br><br>
+
+    <div id="userInfo">
+        User Info Div
+    </div>
+
+</body>
+<footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        function REST_Call(path) {
+                axios.get('http://localhost:4000' + path, { params: {}, withCredentials: true })
+                    .then(({ data }) => {
+                        console.log(data); $('#contents').html(JSON.stringify(data));
+                    })
+                    .catch(err => {
+                        console.log(err); $('#contents').html(JSON.stringify(err));
+                    });
+            }
+
+        axios.get("http://172.23.240.1:3000/hi")
+        .then(response =>{
+            const data = response.data;
+            console.log(data);
+            console.log(response);
+        })
+        .catch(error =>{
+            console.error(error);
+        });
+    </script>
+</footer>
+</html>
