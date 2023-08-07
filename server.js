@@ -38,7 +38,7 @@ app.use(
 );
 
 let corsOptions = {
-  origin: "http://localhost:5173", // 클라이언트의 도메인
+  origin: ["http://localhost:5173", "http://52.79.237.40:4000/"], // 클라이언트의 도메인
   credentials: true,
 };
 app.use(cors(corsOptions));
