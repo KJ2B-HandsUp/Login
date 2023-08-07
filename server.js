@@ -88,9 +88,8 @@ app.get("/authorize", function (req, res) {
   if (scope) {
     scopeParam = "&scope=" + scope;
   }
-  res.json({
-    redirectUrl: `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code${scopeParam}`,
-  });
+  let redirectUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code${scopeParam}`;
+  res.status(302).redirect(redirectUrl);
 });
 
 // 인증 후 로그인 하는 단계
