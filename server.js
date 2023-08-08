@@ -151,6 +151,7 @@ let user_email;
 
 // 엑세스 토큰을 가지고 유저 정보 가져오는 함수인 듯
 async function call(method, uri, param, header) {
+  let rtn;
   try {
     rtn = await axios({
       method: method,
