@@ -15,7 +15,7 @@ const aws_region = process.env.aws_region;
 const aws_accessKeyId = process.env.aws_accessKeyId;
 const aws_secretAccessKey = process.env.aws_secretAccessKey;
 const client_id = process.env.db_client_id;
-const redirect_uri = "http://namanmoo.store:4000/redirect";
+const redirect_uri = "http://namanmoo.store/redirect";
 const token_uri = "https://kauth.kakao.com/oauth/token";
 const api_host = "https://kapi.kakao.com";
 const client_secret = "";
@@ -40,7 +40,7 @@ app.use(
 );
 
 let corsOptions = {
-  origin: ["http://kimcookieya.shop", "http://namanmoo.store:4000/"], // 클라이언트의 도메인
+  origin: ["http://kimcookieya.shop", "http://namanmoo.store"], // 클라이언트의 도메인
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -283,5 +283,5 @@ const deleteFirstItem = async (tableName) => {
 
 // 서버 - 포트 연결
 app.listen(port, () => {
-    console.log(`Listening on port: http://namanmoo.store:${port}`);
+    console.log(`Listening on port: http://namanmoo.store`);
 });
