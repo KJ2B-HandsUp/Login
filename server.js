@@ -1,6 +1,5 @@
 const express = require("express");
 const dotenv = require("dotenv");
-const http = require("http");
 const qs = require("qs");
 const axios = require("axios");
 const session = require("express-session");
@@ -19,7 +18,7 @@ const redirect_uri = "https://namanmoo.store/redirect";
 const token_uri = "https://kauth.kakao.com/oauth/token";
 const api_host = "https://kapi.kakao.com";
 const client_secret = "";
-
+let score_list = [];
 
 // AWS SDK를 DynamoDB Local에 연결하기 위해 endpoint를 설정합니다.
 AWS.config.update({
@@ -59,12 +58,18 @@ app.get("/get", (req, res) => {
   getItem("user", 1, "1@abc");
 });
 
-app.get("/scan", (req, res) => {
-  scanItem("user");
+app.get("/scan", async (req, res) => {
+  await scanItem("user");
+  console.log(score_list);
+  res.send(score_list);
 });
 
 app.get("/del", (req, res) => {
   deleteFirstItem("user");
+});
+
+app.get("/update", (req, res) => {
+  updateItem("user", 1, "1@gmail.com", 10);
 });
 
 // 권한 확인
@@ -80,7 +85,6 @@ app.get("/authorize", function (req, res) {
 
 // 인증 후 로그인 하는 단계
 app.get("/redirect", async function (req, res) {
-  console.log("asdfasdf");
   const param = qs.stringify({
     grant_type: "authorization_code",
     client_id: client_id,
@@ -105,9 +109,7 @@ app.get("/profile", async function (req, res) {
     "content-Type": "application/x-www-form-urlencoded",
     Authorization: "Bearer " + req.session.key,
   };
-  console.log("asdf");
   var rtn = await call("POST", uri, param, header);
-  console.log("asdfafsdfasdfsf");
   res.json({ data: rtn });
   console.log(rtn);
 });
@@ -226,6 +228,73 @@ const getItem = async (tableName, id_val, email_val) => {
   }
 };
 
+
+
+const updateItem = async (tableName, id_val, email_val, highscore_val) => {
+  const params = {
+    TableName: tableName,
+    Key: {
+      user_id: id_val,
+      user_email: email_val
+    }
+  };
+
+  await docClient.get(params, (err, data) => {
+    if (err) {
+      console.error('Error getting item:', err);
+    } else {
+      if (data.Item) {
+        const existingHighscore = parseInt(data.Item.highscore);
+        if (highscore_val > existingHighscore) {
+          // 새로운 highscore가 더 높을 경우, 아이템 갱신
+          const updateParams = {
+            TableName: tableName,
+            Key: {
+              user_id: id_val,
+              user_email: email_val
+            },
+            UpdateExpression: 'SET highscore = :newHighscore',
+            ExpressionAttributeValues: {
+              ':newHighscore': highscore_val
+            }
+          };
+
+          docClient.update(updateParams, (updateErr, updateData) => {
+            if (updateErr) {
+              console.error('Error updating item:', updateErr);
+            } else {
+              console.log('Item updated successfully:', updateData);
+            }
+          });
+        } else {
+          console.log('New score is not higher, no update needed.');
+        }
+      } else {
+        // 조회 결과가 없으면, 새로운 데이터 삽입
+        const insertParams = {
+          TableName: tableName,
+          Item: {
+            user_id: id_val,
+            user_email: email_val,
+            highscore: highscore_val
+          }
+        };
+
+        docClient.put(insertParams, (insertErr, insertData) => {
+          if (insertErr) {
+            console.error('Error inserting item:', insertErr);
+          } else {
+            console.log('Item inserted successfully:', insertData);
+          }
+        });
+      }
+    }
+  });
+};
+
+
+
+
 // 로컬 DynamoDB 테이블에 있는 모든 데이터를 조회하는 함수
 const scanItem = async (tableName) => {
   const params = {
@@ -234,14 +303,14 @@ const scanItem = async (tableName) => {
 
   try {
     const data = await docClient.scan(params).promise();
-
+    score_list = data.Items;
     console.log("Item retrieved successfully:", data.Items);
   } catch (err) {
     console.error("Error getting item:", err);
   }
 };
 
-// 로컬 DynamoDB의 테이블 데이터 맨 위 인덱스 값을 삭제하는 함수
+// 로컬 DynamoDB의 테이블 데이터 맨 위 값을 삭제하는 함수
 const deleteFirstItem = async (tableName) => {
   const params = {
     TableName: tableName,
