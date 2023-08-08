@@ -19,7 +19,7 @@ const redirect_uri = "http://52.79.237.40:4000/redirect";
 const token_uri = "https://kauth.kakao.com/oauth/token";
 const api_host = "https://kapi.kakao.com";
 const client_secret = "";
-const docClient = new AWS.DynamoDB.DocumentClient();
+
 
 // AWS SDK를 DynamoDB Local에 연결하기 위해 endpoint를 설정합니다.
 AWS.config.update({
@@ -27,6 +27,8 @@ AWS.config.update({
   accessKeyId: aws_accessKeyId, // 로컬 환경에서 더미(dummy) 액세스 키를 사용합니다.
   secretAccessKey: aws_secretAccessKey, // 로컬 환경에서 더미(dummy) 시크릿 액세스 키를 사용합니다.
 });
+
+const docClient = new AWS.DynamoDB.DocumentClient();
 
 app.use(
   session({
@@ -38,7 +40,7 @@ app.use(
 );
 
 let corsOptions = {
-  origin: ["http://localhost:5173", "http://52.79.237.40:4000/"], // 클라이언트의 도메인
+  origin: ["http://kimcookieya.shop", "http://52.79.237.40:4000/"], // 클라이언트의 도메인
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -64,22 +66,6 @@ app.get("/scan", (req, res) => {
 app.get("/del", (req, res) => {
   deleteFirstItem("user");
 });
-
-// // 서버2 주소
-// const SERVER2_URL = "http://:3000";
-
-// // 서버 1의 라우트 핸들러
-// app.get('/4to3', async (req, res) => {
-//     try {
-//         // 서버 2로 GET 요청 보내기
-//         const responseFromServer2 = await axios.get(`${SERVER2_URL}/hi2`);
-//         const responseData = responseFromServer2.data;
-//         res.send(`서버 1에서 서버 2로 요청을 보냈습니다. 응답 데이터: ${responseData}`);
-//     } catch (error) {
-//         console.error('서버 2 요청 에러:', error);
-//         res.status(500).send('서버 2 요청 에러 발생');
-//     }
-// });
 
 // 권한 확인
 app.get("/authorize", function (req, res) {
@@ -107,7 +93,7 @@ app.get("/redirect", async function (req, res) {
   var rtn = await call("POST", token_uri, param, header);
   req.session.key = rtn.access_token;
   profile(req.session.key);
-  res.status(302).redirect(`http://localhost:5173/main`);
+  res.status(302).redirect(`http://kimcookieya.shop/main`);
   console.log(rtn);
 });
 
