@@ -15,7 +15,7 @@ const aws_region = process.env.aws_region;
 const aws_accessKeyId = process.env.aws_accessKeyId;
 const aws_secretAccessKey = process.env.aws_secretAccessKey;
 const client_id = process.env.db_client_id;
-const redirect_uri = "http://namanmoo.store/redirect";
+const redirect_uri = "https://namanmoo.store/redirect";
 const token_uri = "https://kauth.kakao.com/oauth/token";
 const api_host = "https://kapi.kakao.com";
 const client_secret = "";
@@ -283,5 +283,5 @@ const deleteFirstItem = async (tableName) => {
 
 // 서버 - 포트 연결
 app.listen(port, () => {
-    console.log(`Listening on port: http://namanmoo.store`);
+    console.log(`Listening on port: https://namanmoo.store`);
 });
