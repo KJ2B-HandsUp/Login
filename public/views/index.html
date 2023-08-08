@@ -10,7 +10,7 @@
   <body>
     <h1>Login Test Page!</h1>
 
-    <a href="http://namanmoo.store/authorize">
+    <a href="https://namanmoo.store/authorize">
       <!-- 여기는 그냥 이미지만 있고, 결국 http://localhost:4000/authorize로 보내서 여기서 카카오에서 인가코드를 받아서 그걸 url에 붙여서 /redirect 라는 주소로 리다이렉트 시켜서 거기서 엑세스 토큰과 리프레시 토큰을 발급받는 형태로 보여진다. -->
       <img
         src="//k.kakaocdn.net/14/dn/btqCn0WEmI3/nijroPfbpCa4at5EIsjyf0/o.jpg"
@@ -30,7 +30,7 @@
     <script>
       function REST_Call(path) {
         axios
-          .get("http://namanmoo.store" + path, {
+          .get("https://namanmoo.store" + path, {
             params: {},
             withCredentials: true,
           })
