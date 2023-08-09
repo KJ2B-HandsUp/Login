@@ -38,8 +38,10 @@ app.use(
   })
 );
 
-app.use(cors());
-app.options("/authorize", cors());
+app.use(cors({
+  origin: "https://kimcookieya.shop",
+  credentials: true
+}));
 
 // 로그인 메인 화면
 app.get("/", function (req, res) {
