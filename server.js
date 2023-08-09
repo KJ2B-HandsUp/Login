@@ -30,37 +30,28 @@ AWS.config.update({
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-// app.use(
-//   session({
-//     secret: "your session secret",
-//     resave: true,
-//     saveUninitialized: true,
-//     cookie: { secure: true, sameSite: "none"},
-//   })
-// );
+// app.use((req, res, next) => {
+//   const cookieOptions = {
+//     httpOnly: true,
+//     sameSite: "none",
+//     secure: true,
+//     maxAge: 24 * 60 * 60 * 1000,
+//   };
 
-app.use((req, res, next) => {
-  const cookieOptions = {
-    httpOnly: true,
-    sameSite: "none",
-    secure: true,
-    maxAge: 24 * 60 * 60 * 1000,
-  };
+//   res.cookie("sessionCookieName", "yourSessionValue", cookieOptions);
 
-  res.cookie("sessionCookieName", "yourSessionValue", cookieOptions);
-
-  next();
-});
+//   next();
+// });
 
 app.use(cookieParser());
 
 app.use(cors({
-  origin: "https://kimcookieya.shop",
+  origin: "https://cocomodo.shop",
   credentials: true
 }));
 
 // 로그인 메인 화면
-app.get("/back/", function (req, res) {
+app.get("/", function (req, res) {
   res.sendFile(__dirname + "/public/views/index.html");
 });
 
@@ -125,20 +116,14 @@ app.get("/redirect", async function (req, res) {
   // req.session.key = rtn.access_token;
   res.cookie('access_token', rtn.access_token, {
     httpOnly: true,
-    sameSite: "none",
     secure: true,
-    maxAge: 24 * 60 * 60 * 1000,
   });
   console.log(rtn.access_token);
   // console.log(req.session.key);
   await profile(rtn.access_token);
   console.log("체크 포인트 6");
-  res.status(302).redirect(`https://namanmoo.store/cookie`);
+  res.status(302).redirect(`https://cocomodo.shop/main`);
 });
-
-app.get("/cookie", (req, res) => {
-  
-})
 
 // 사용자 프로필 조회
 app.get("/profile", async function (req, res) {
@@ -355,5 +340,5 @@ const deleteFirstItem = async (tableName) => {
 
 // 서버 - 포트 연결
 app.listen(port, () => {
-    console.log(`Listening on port: https://namanmoo.store`);
+  console.log(`Listening on port: https://cocomodo.shop`);
 });
