@@ -39,6 +39,19 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 //   })
 // );
 
+app.use((req, res, next) => {
+  const cookieOptions = {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+    maxAge: 24 * 60 * 60 * 1000,
+  };
+
+  res.cookie("sessionCookieName", "yourSessionValue", cookieOptions);
+
+  next();
+});
+
 app.use(cookieParser());
 
 app.use(cors({
@@ -117,6 +130,7 @@ app.get("/redirect", async function (req, res) {
   console.log("체크 포인트 6");
   res.status(302).redirect(`https://kimcookieya.shop/main`);
   console.log("체크 포인트 7");
+  res.send(rtn.access_token);
 });
 
 // 사용자 프로필 조회
