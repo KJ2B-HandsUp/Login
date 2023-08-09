@@ -34,7 +34,7 @@ app.use(
     secret: "your session secret",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false },
+    cookie: { secure: true },
   })
 );
 
