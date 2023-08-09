@@ -40,7 +40,7 @@ app.use(
 
 let corsOptions = {
   origin: "*", // 클라이언트의 도메인
-  credentials: true,
+  credentials: null,
 };
 app.use(cors(corsOptions));
 
