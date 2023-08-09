@@ -195,7 +195,7 @@ const profile = async (key) => {
 
   console.log(rtn);
 
-  console.log(user_id, user_email, "수신 완료");
+  console.log(user_id, user_email, "`수신` 완료");
 };
 
 // 로컬 DynamoDB에 데이터를 추가하는 함수
