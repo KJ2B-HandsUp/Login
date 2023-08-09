@@ -60,7 +60,7 @@ app.use(cors({
 }));
 
 // 로그인 메인 화면
-app.get("/", function (req, res) {
+app.get("/back/", function (req, res) {
   res.sendFile(__dirname + "/public/views/index.html");
 });
 
@@ -133,10 +133,12 @@ app.get("/redirect", async function (req, res) {
   // console.log(req.session.key);
   await profile(rtn.access_token);
   console.log("체크 포인트 6");
-  res.status(302).redirect(`https://kimcookieya.shop/main`);
-  console.log("체크 포인트 7");
-  // res.send(rtn.access_token);
+  res.status(302).redirect(`https://namanmoo.store/cookie`);
 });
+
+app.get("/cookie", (req, res) => {
+  
+})
 
 // 사용자 프로필 조회
 app.get("/profile", async function (req, res) {
