@@ -39,7 +39,7 @@ app.use(
 );
 
 let corsOptions = {
-  origin: ["https://kimcookieya.shop", "https://namanmoo.store"], // 클라이언트의 도메인
+  origin: "*", // 클라이언트의 도메인
   credentials: true,
 };
 app.use(cors(corsOptions));
