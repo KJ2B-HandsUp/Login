@@ -39,7 +39,7 @@ app.use(
 );
 
 let corsOptions = {
-  origin: ["http://kimcookieya.shop", "http://namanmoo.store"], // 클라이언트의 도메인
+  origin: ["https://kimcookieya.shop", "https://namanmoo.store"], // 클라이언트의 도메인
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -97,7 +97,7 @@ app.get("/redirect", async function (req, res) {
   var rtn = await call("POST", token_uri, param, header);
   req.session.key = rtn.access_token;
   profile(req.session.key);
-  res.status(302).redirect(`http://kimcookieya.shop/main`);
+  res.status(302).redirect(`https://kimcookieya.shop/main`);
   console.log(rtn);
 });
 
