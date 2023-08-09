@@ -105,11 +105,11 @@ app.get("/redirect", async function (req, res) {
   var rtn = await call("POST", token_uri, param, header);
   console.log("체크 포인트 5");
   req.session.key = rtn.access_token;
-  profile(req.session.key);
+  console.log(rtn.access_token);
+  await profile(req.session.key);
   console.log("체크 포인트 6");
   res.status(302).redirect(`https://kimcookieya.shop/main`);
   console.log("체크 포인트 7");
-  console.log(rtn);
 });
 
 // 사용자 프로필 조회
@@ -192,8 +192,6 @@ const profile = async (key) => {
 
   user_id = rtn.id;
   user_email = rtn.kakao_account.email;
-
-  console.log(rtn);
 
   console.log(user_id, user_email, "`수신` 완료");
 };
