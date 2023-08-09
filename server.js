@@ -100,7 +100,7 @@ app.get("/redirect", async function (req, res) {
     code: req.query.code,
   });
   const origin = req.headers.origin;
-  console.log(origin);
+  console.log(origin, req.headers.origin);
 
   console.log("체크 포인트 4");
   const header = { "content-type": "application/x-www-form-urlencoded" };
