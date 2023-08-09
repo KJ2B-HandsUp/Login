@@ -32,7 +32,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 app.use(
   session({
     secret: "your session secret",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     cookie: { secure: true },
   })
@@ -125,41 +125,6 @@ app.get("/profile", async function (req, res) {
   };
   var rtn = await call("POST", uri, param, header);
   res.json({ data: rtn });
-  console.log(rtn);
-});
-
-// 친구?
-app.get("/friends", async function (req, res) {
-  const uri = api_host + "/v1/api/talk/friends";
-  const param = null;
-  const header = {
-    Authorization: "Bearer " + req.session.key,
-  };
-  var rtn = await call("GET", uri, param, header);
-  res.send(rtn);
-});
-
-// 메세지?
-app.get("/message", async function (req, res) {
-  const uri = api_host + "/v2/api/talk/memo/default/send";
-  const param = qs.stringify({
-    template_object:
-      "{" +
-      '"object_type": "text",' +
-      '"text": "텍스트 영역입니다. 최대 200자 표시 가능합니다.",' +
-      '"link": {' +
-      '    "web_url": "https://developers.kakao.com",' +
-      '    "mobile_web_url": "https://developers.kakao.com"' +
-      "}," +
-      '"button_title": "바로 확인"' +
-      "}",
-  });
-  const header = {
-    "content-Type": "application/x-www-form-urlencoded",
-    Authorization: "Bearer " + req.session.key,
-  };
-  var rtn = await call("POST", uri, param, header);
-  res.send(rtn);
 });
 
 let user_id;
