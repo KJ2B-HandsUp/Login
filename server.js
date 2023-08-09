@@ -123,7 +123,12 @@ app.get("/redirect", async function (req, res) {
   var rtn = await call("POST", token_uri, param, header);
   console.log("체크 포인트 5");
   // req.session.key = rtn.access_token;
-  res.cookie('access_token', rtn.access_token, { httpOnly: true });
+  res.cookie('access_token', rtn.access_token, {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+    maxAge: 24 * 60 * 60 * 1000,
+  });
   console.log(rtn.access_token);
   // console.log(req.session.key);
   await profile(rtn.access_token);
