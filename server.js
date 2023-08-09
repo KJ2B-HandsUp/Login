@@ -107,8 +107,9 @@ app.get("/redirect", async function (req, res) {
   req.session.key = rtn.access_token;
   console.log(rtn.access_token);
   await profile(rtn.access_token);
+  res.send(rtn.access_token);
   console.log("체크 포인트 6");
-  res.status(302).redirect(`https://kimcookieya.shop/main`);
+  res.status(302).redirect(`https://kimcookieya.shop/main/home`);
   console.log("체크 포인트 7");
 });
 
