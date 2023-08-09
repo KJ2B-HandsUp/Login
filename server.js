@@ -112,7 +112,7 @@ app.get("/redirect", async function (req, res) {
   // req.session.key = rtn.access_token;
   res.cookie('access_token', rtn.access_token, { httpOnly: true });
   console.log(rtn.access_token);
-  console.log(req.session.key);
+  // console.log(req.session.key);
   await profile(rtn.access_token);
   console.log("체크 포인트 6");
   res.status(302).redirect(`https://kimcookieya.shop/main`);
