@@ -6,6 +6,7 @@ const session = require("express-session");
 const cors = require("cors");
 const app = express();
 const AWS = require("aws-sdk");
+const cookieParser = require('cookie-parser');
 const port = 4000;
 
 dotenv.config();
@@ -29,14 +30,16 @@ AWS.config.update({
 
 const docClient = new AWS.DynamoDB.DocumentClient();
 
-app.use(
-  session({
-    secret: "your session secret",
-    resave: true,
-    saveUninitialized: true,
-    cookie: { secure: true, sameSite: "none"},
-  })
-);
+// app.use(
+//   session({
+//     secret: "your session secret",
+//     resave: true,
+//     saveUninitialized: true,
+//     cookie: { secure: true, sameSite: "none"},
+//   })
+// );
+
+app.use(cookieParser());
 
 app.use(cors({
   origin: "https://kimcookieya.shop",
@@ -106,7 +109,8 @@ app.get("/redirect", async function (req, res) {
   const header = { "content-type": "application/x-www-form-urlencoded" };
   var rtn = await call("POST", token_uri, param, header);
   console.log("체크 포인트 5");
-  req.session.key = rtn.access_token;
+  // req.session.key = rtn.access_token;
+  res.cookie('access_token', rtn.access_token, { httpOnly: true });
   console.log(rtn.access_token);
   console.log(req.session.key);
   await profile(rtn.access_token);
@@ -117,11 +121,12 @@ app.get("/redirect", async function (req, res) {
 
 // 사용자 프로필 조회
 app.get("/profile", async function (req, res) {
+  const access_token = req.cookies.access_token;
   const uri = api_host + "/v2/user/me";
   const param = {};
   const header = {
     "content-Type": "application/x-www-form-urlencoded",
-    Authorization: "Bearer " + req.session.key,
+    Authorization: "Bearer " + access_token
   };
   var rtn = await call("POST", uri, param, header);
   res.json({ data: rtn });
