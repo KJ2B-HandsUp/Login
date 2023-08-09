@@ -130,7 +130,7 @@ app.get("/redirect", async function (req, res) {
   console.log("체크 포인트 6");
   res.status(302).redirect(`https://kimcookieya.shop/main`);
   console.log("체크 포인트 7");
-  res.send(rtn.access_token);
+  // res.send(rtn.access_token);
 });
 
 // 사용자 프로필 조회
