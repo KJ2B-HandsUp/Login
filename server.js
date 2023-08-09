@@ -38,11 +38,8 @@ app.use(
   })
 );
 
-let corsOptions = {
-  origin: "*", // 클라이언트의 도메인
-  credentials: true,
-};
-app.use(cors(corsOptions));
+app.use(cors());
+app.options("/authorize", cors());
 
 // 로그인 메인 화면
 app.get("/", function (req, res) {
