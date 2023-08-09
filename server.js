@@ -79,8 +79,11 @@ app.get("/authorize", function (req, res) {
   if (scope) {
     scopeParam = "&scope=" + scope;
   }
+  console.log("체크 포인트 1");
   let redirectUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&response_type=code${scopeParam}`;
+  console.log("체크 포인트 2");
   res.status(302).redirect(redirectUrl);
+  console.log("체크 포인트 3");
 });
 
 // 인증 후 로그인 하는 단계
@@ -93,11 +96,15 @@ app.get("/redirect", async function (req, res) {
     code: req.query.code,
   });
 
+  console.log("체크 포인트 4");
   const header = { "content-type": "application/x-www-form-urlencoded" };
   var rtn = await call("POST", token_uri, param, header);
+  console.log("체크 포인트 5");
   req.session.key = rtn.access_token;
   profile(req.session.key);
+  console.log("체크 포인트 6");
   res.status(302).redirect(`https://kimcookieya.shop/main`);
+  console.log("체크 포인트 7");
   console.log(rtn);
 });
 
