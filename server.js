@@ -106,7 +106,7 @@ app.get("/redirect", async function (req, res) {
   console.log("체크 포인트 5");
   req.session.key = rtn.access_token;
   console.log(rtn.access_token);
-  await profile(req.session.key);
+  await profile(rtn.access_token);
   console.log("체크 포인트 6");
   res.status(302).redirect(`https://kimcookieya.shop/main`);
   console.log("체크 포인트 7");
@@ -176,7 +176,7 @@ async function call(method, uri, param, header) {
     console.error(err);
     rtn = err.response;
   }
-  console.log(rtn);
+  //console.log(rtn);
   return rtn.data;
 }
 
