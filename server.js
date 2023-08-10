@@ -79,7 +79,7 @@ app.get("/update", (req, res) => {
 });
 
 // 권한 확인
-app.get("/authorize", function (req, res) {
+app.get("/api/authorize", function (req, res) {
   let { scope } = req.query;
   var scopeParam = "";
   if (scope) {
@@ -98,7 +98,7 @@ app.get("/authorize", function (req, res) {
 });
 
 // 인증 후 로그인 하는 단계
-app.get("/redirect", async function (req, res) {
+app.get("/api/redirect", async function (req, res) {
   const param = qs.stringify({
     grant_type: "authorization_code",
     client_id: client_id,
@@ -126,7 +126,7 @@ app.get("/redirect", async function (req, res) {
 });
 
 // 사용자 프로필 조회
-app.get("/profile", async function (req, res) {
+app.get("/api/profile", async function (req, res) {
   const access_token = req.cookies.access_token;
   const uri = api_host + "/v2/user/me";
   const param = {};
